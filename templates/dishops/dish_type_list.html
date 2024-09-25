@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Dish type List
+    <a href="{% url 'dishops:dish_type_create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+  {% include "includes/search_form.html" %}
+  {% if dish_type_list %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+
+      {% for dish_type in dish_type_list %}
+        <tr>
+          <td>
+              {{ dish_type.id }}
+          </td>
+          <td>
+              {{ dish_type.name }}
+          </td>
+          <td>
+              <a href="{% url 'dishops:dish_type_update' pk=dish_type.id %}">
+                Update
+              </a>
+            </td>
+            <td>
+              <a style="color: red"
+                href="{% url 'dishops:dish_type_delete' pk=dish_type.id %}">
+                Delete
+              </a>
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no dish types in the kitchen.</p>
+  {% endif %}
+{% endblock %}
