@@ -1,13 +1,16 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 
 from dishops.models import Dish, Cook
 
 
 def validate_years_of_experience(years_of_experience):
-    if years_of_experience < 0:
-        raise forms.ValidationError("Years of experience cannot be negative.")
+    if years_of_experience <= 0:
+        raise ValidationError("Years of experience must be greater than 0.")
+    if years_of_experience > 100:
+        raise ValidationError("Years of experience must be less than or equal to 100.")
     return years_of_experience
 
 
@@ -40,7 +43,7 @@ class CookExperienceUpdateForm(forms.ModelForm):
         model = Cook
         fields = ["years_of_experience"]
 
-    def clean_license_number(self):
+    def clean_years_of_experience(self):
         return validate_years_of_experience(self.cleaned_data["years_of_experience"])
 
 
