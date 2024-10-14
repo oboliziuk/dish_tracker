@@ -19,7 +19,11 @@ from .views import (
     CookListView,
     CookDetailView,
     CookCreateView,
-    UserLoginView, logout_view, UserPasswordResetConfirmView, UserPasswordResetView, UserPasswordChangeView,
+    UserLoginView,
+    logout_view,
+    UserPasswordResetConfirmView,
+    UserPasswordResetView,
+    UserPasswordChangeView,
 )
 
 urlpatterns = [
@@ -47,8 +51,16 @@ urlpatterns = [
     path("dishes/", DishListView.as_view(), name="dish-list"),
     path("dishes/<int:pk>/", DishDetailView.as_view(), name="dish-detail"),
     path("dishes/create/", DishCreateView.as_view(), name="dish-create"),
-    path("dishes/<int:pk>/update/", DishUpdateView.as_view(), name="dish-update"),
-    path("dishes/<int:pk>/delete/", DishDeleteView.as_view(), name="dish-delete"),
+    path(
+        "dishes/<int:pk>/update/",
+        DishUpdateView.as_view(),
+        name="dish-update"
+    ),
+    path(
+        "dishes/<int:pk>/delete/",
+        DishDeleteView.as_view(),
+        name="dish-delete"
+    ),
     path(
         "dishes/<int:pk>/toggle-assign/",
         toggle_assign_to_dish,
@@ -69,21 +81,40 @@ urlpatterns = [
         CookExperienceUpdateView.as_view(),
         name="cook-update",
     ),
-    path("cooks/<int:pk>/delete/", CookDeleteView.as_view(), name="cook-delete"),
+    path(
+        "cooks/<int:pk>/delete/",
+        CookDeleteView.as_view(),
+        name="cook-delete"
+    ),
 
 
-# Authentication
     path('accounts/login/', UserLoginView.as_view(), name='login'),
     path('accounts/register/', register, name='register'),
     path('accounts/logout/', logout_view, name='logout'),
-    path('accounts/password-change/', UserPasswordChangeView.as_view(), name='password_change'),
-    path('accounts/password-change-done/', auth_views.PasswordChangeDoneView.as_view(
-        template_name='accounts/password_change_done.html'
-    ), name='password_change_done'),
-    path('accounts/password-reset/', UserPasswordResetView.as_view(), name='password_reset'),
-    path('accounts/password-reset-done/', auth_views.PasswordResetDoneView.as_view(
-        template_name='accounts/password_reset_done.html'
-    ), name='password_reset_done'),
+    path(
+        'accounts/password-change/',
+        UserPasswordChangeView.as_view(),
+        name='password_change'
+    ),
+    path(
+        'accounts/password-change-done/',
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name='accounts/password_change_done.html'
+        ),
+        name='password_change_done'
+    ),
+    path(
+        'accounts/password-reset/',
+        UserPasswordResetView.as_view(),
+        name='password_reset'
+    ),
+    path(
+        'accounts/password-reset-done/',
+        auth_views.PasswordResetDoneView.as_view(
+            template_name='accounts/password_reset_done.html'
+        ),
+        name='password_reset_done'
+    ),
     path(
         'accounts/password-reset-confirm/<uidb64>/<token>/',
         UserPasswordResetConfirmView.as_view(),
@@ -91,8 +122,11 @@ urlpatterns = [
     ),
     path(
         'accounts/password-reset-complete/',
-        auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'
-    ), name='password_reset_complete'),
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name='accounts/password_reset_complete.html'
+        ),
+        name='password_reset_complete'
+    ),
 ]
 
 app_name = "dishops"

@@ -1,8 +1,13 @@
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
+from django.contrib.auth.views import (
+    LoginView,
+    PasswordResetView,
+    PasswordResetConfirmView,
+    PasswordChangeView
+)
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -15,11 +20,11 @@ from dishops.forms import (
     DishForm,
     CookExperienceUpdateForm,
     CookCreationForm,
-    CookSearchForm, UserPasswordResetForm, UserSetPasswordForm, UserPasswordChangeForm,
+    CookSearchForm,
+    UserPasswordResetForm,
+    UserSetPasswordForm,
+    UserPasswordChangeForm,
 )
-
-print(UserPasswordResetForm)
-
 
 
 @login_required
@@ -90,7 +95,9 @@ class DishListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(DishListView, self).get_context_data(**kwargs)
         dish_type = self.request.GET.get("dish_type", "")
-        context["search_form"] = DishSearchForm(initial={"dish_type": dish_type})
+        context["search_form"] = DishSearchForm(
+            initial={"dish_type": dish_type}
+        )
         return context
 
     def get_queryset(self):
