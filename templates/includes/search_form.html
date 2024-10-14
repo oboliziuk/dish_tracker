@@ -1,5 +1,8 @@
 {% load crispy_forms_filters %}
-<form method="get" action="" class="form-inline">
+<div class="input-group input-group-sm">
+  <form method="get" action="" class="form-inline d-flex align-items-center">
+
     {{ search_form|crispy }}
-    <input class="btn btn-secondary" type="submit" value="🔍">
-</form>
+    <input class="btn btn-light ms-2" type="submit" value="🔍">
+  </form>
+</div>

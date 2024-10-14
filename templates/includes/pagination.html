@@ -1,17 +1,38 @@
-{% if is_paginated %}
-  <ul class="pagination">
-    {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a href="?page= {{ page_obj.previous_page_number }}" class="page-link">prev</a>
-      </li>
-    {% endif %}
-    <li class="page-item active">
-      <span class="page-link">{{ page_obj.number }} of {{ paginator.num_pages }}</span>
-    </li>
-    {% if page_obj.has_next %}
-      <li class="page-item">
-        <a href="?page= {{ page_obj.next_page_number }}" class="page-link">next</a>
-      </li>
-    {% endif %}
-  </ul>
-{% endif %}
+<div class="container">
+  <div class="row justify-space-between py-2">
+    <div class="col-lg-4 mx-auto">
+      <ul class="pagination pagination-primary m-4">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link" aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+          <a class="page-link active" href="javascript:;" style="font-size: 12px; color: white">
+            {{ page_obj.number }} of {{ paginator.num_pages }}
+          </a>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <span class="page-link" aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
