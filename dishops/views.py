@@ -1,6 +1,9 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
+from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,8 +15,11 @@ from dishops.forms import (
     DishForm,
     CookExperienceUpdateForm,
     CookCreationForm,
-    CookSearchForm,
+    CookSearchForm, UserPasswordResetForm, UserSetPasswordForm, UserPasswordChangeForm,
 )
+
+print(UserPasswordResetForm)
+
 
 
 @login_required
@@ -77,7 +83,8 @@ class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DishListView(LoginRequiredMixin, generic.ListView):
     model = Dish
-    paginate_by = 2
+    template_name = "dishops/dish_list.html"
+    paginate_by = 5
     queryset = Dish.objects.select_related("dish_type")
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -95,6 +102,7 @@ class DishListView(LoginRequiredMixin, generic.ListView):
 
 class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Dish
+    template_name = "dishops/dish_detail.html"
 
 
 class DishCreateView(LoginRequiredMixin, generic.CreateView):
@@ -117,6 +125,7 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 class CookListView(LoginRequiredMixin, generic.ListView):
     model = Cook
     queryset = Cook.objects.all()
+    template_name = "dishops/cook_list.html"
     paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -137,12 +146,24 @@ class CookListView(LoginRequiredMixin, generic.ListView):
 
 class CookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
+    template_name = "dishops/cook_detail.html"
     queryset = Cook.objects.all().prefetch_related("dishes__dish_type")
 
 
 class CookCreateView(LoginRequiredMixin, generic.CreateView):
     model = Cook
+    template_name = "dishops/cook_form.html"
     form_class = CookCreationForm
+
+
+class UserLoginView(LoginView):
+    template_name = 'accounts/sign-in.html'
+    form_class = AuthenticationForm
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/accounts/login')
 
 
 class CookExperienceUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -153,12 +174,13 @@ class CookExperienceUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Cook
-    success_url = reverse_lazy("")
+    success_url = reverse_lazy("dishops:cook-list")
 
 
 @login_required
 def toggle_assign_to_dish(request, pk):
     cook = Cook.objects.get(id=request.user.id)
+
     if (
         Dish.objects.get(id=pk) in cook.dishes.all()
     ):  # probably could check if dish exists
@@ -166,3 +188,18 @@ def toggle_assign_to_dish(request, pk):
     else:
         cook.dishes.add(pk)
     return HttpResponseRedirect(reverse_lazy("dishops:dish-detail", args=[pk]))
+
+
+class UserPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+    form_class = UserPasswordResetForm
+
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+    form_class = UserSetPasswordForm
+
+
+class UserPasswordChangeView(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    form_class = UserPasswordChangeForm
