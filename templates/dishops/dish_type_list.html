@@ -1,46 +1,79 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Dish types list</title>
+{% endblock %}
+
+{% block body %}{% endblock body %}
+
+{% block header %}
+{% include 'includes/sidebar_light.html' %}
+{% endblock header %}
 
 {% block content %}
-  <h1>
-    Dish type List
-    <a href="{% url 'dishops:dish_type_create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
-  {% include "includes/search_form.html" %}
-  {% if dish_type_list %}
-    <table class="table">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
+<!-- -------- START HEADER 8 w/ card over right bg image ------- -->
+<header>
+  <div class="page-header min-vh-85">
+    <div>
+      <img
+          class="position-absolute fixed-top ms-auto w-50 h-100 z-index-0 d-none d-sm-none d-md-block border-radius-section border-top-end-radius-0 border-top-start-radius-0 border-bottom-end-radius-0"
+          src="{% static 'img/curved-images/curved8.jpg' %}" alt="image">
+    </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-7 d-flex justify-content-center flex-column">
+          <div class="card d-flex blur justify-content-center p-4 shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+            <div class="text-center">
+              <h3>Dish type List</h3>
+              <p class="mb-0">
+                Discover the variety of dishes available in our kitchen management system.
+              </p>
+            </div>
+            <div class="mt-4">
+              {% if dish_type_list %}
+              <table class="table">
+                <tr>
+                  <th style="color: #333;">ID</th>
+                  <th style="color: #333;">Name</th>
+                  <th style="color: #333;">Update</th>
+                  <th style="color: #333;">Delete</th>
+                </tr>
 
-      {% for dish_type in dish_type_list %}
-        <tr>
-          <td>
-              {{ dish_type.id }}
-          </td>
-          <td>
-              {{ dish_type.name }}
-          </td>
-          <td>
-              <a href="{% url 'dishops:dish_type_update' pk=dish_type.id %}">
-                Update
-              </a>
-            </td>
-            <td>
-              <a style="color: red"
-                href="{% url 'dishops:dish_type_delete' pk=dish_type.id %}">
-                Delete
-              </a>
-            </td>
-        </tr>
-      {% endfor %}
-    </table>
+                {% for dish_type in dish_type_list %}
+                <tr>
+                  <td>
+                    {{ dish_type.id }}
+                  </td>
+                  <td>
+                    {{ dish_type.name }}
+                  </td>
+                  <td>
+                    <a href="{% url 'dishops:dish_type_update' pk=dish_type.id %}">
+                      Update
+                    </a>
+                  </td>
+                  <td>
+                    <a style="color: red"
+                       href="{% url 'dishops:dish_type_delete' pk=dish_type.id %}">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
 
-  {% else %}
-      <p>There are no dish types in the kitchen.</p>
-  {% endif %}
-{% endblock %}
+              {% else %}
+              <p>There are no dish types in the kitchen.</p>
+              {% endif %}
+              <div class="d-flex justify-content-center">
+                <a href="{% url 'dishops:dish_type_create' %}" class="btn bg-gradient-primary mb-3 mb-0">Create</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock content %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_filters %}
 
 {% block header %}
@@ -24,4 +25,35 @@
 
                 <input type="submit" value="Submit" class="btn btn-primary">
               </form>
-              {% endblock %}
+            </div>
+
+          </div>
+        </div>
+        <div
+            class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
+          <div
+              class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center">
+            <img src="{% static 'img/shapes/pattern-lines.svg' %}" alt="pattern-lines"
+                 class="position-absolute opacity-4 start-0">
+            <div class="position-relative">
+              <img class="max-width-500 w-100 position-relative z-index-2"
+                   src="{% static 'img/illustrations/chat.png' %}">
+            </div>
+            <h4 class="mt-5 text-white font-weight-bolder">"Your journey begins here"</h4>
+            <p class="text-white">Sign up to become part of our community and start creating your culinary
+              masterpieces.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block footer %}
+
+{% include 'includes/footer_signin.html' %}
+
+{% endblock footer %}
