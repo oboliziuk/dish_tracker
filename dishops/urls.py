@@ -14,7 +14,6 @@ from .views import (
     DishCreateView,
     DishUpdateView,
     DishDeleteView,
-    toggle_assign_to_dish,
     CookListView,
     CookDetailView,
     CookCreateView,
@@ -24,6 +23,7 @@ from .views import (
     UserPasswordResetView,
     UserPasswordChangeView,
     IndexView,
+    ToggleAssignToDishView,
 )
 
 urlpatterns = [
@@ -62,9 +62,9 @@ urlpatterns = [
         name="dish-delete"
     ),
     path(
-        "dishes/<int:pk>/toggle-assign/",
-        toggle_assign_to_dish,
-        name="toggle-dish-assign",
+        "dish/<int:pk>/toggle-assign/",
+        ToggleAssignToDishView.as_view(),
+        name="toggle-assign-to-dish"
     ),
     path("cooks/", CookListView.as_view(), name="cook-list"),
     path(

@@ -10,7 +10,7 @@ from django.contrib.auth.views import (
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
@@ -180,17 +180,16 @@ class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("dishops:cook-list")
 
 
-@login_required
-def toggle_assign_to_dish(request, pk):
-    cook = Cook.objects.get(id=request.user.id)
+class ToggleAssignToDishView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        cook = Cook.objects.get(id=request.user.id)
+        dish = Dish.objects.get(id=pk)
 
-    if (
-        Dish.objects.get(id=pk) in cook.dishes.all()
-    ):  # probably could check if dish exists
-        cook.dishes.remove(pk)
-    else:
-        cook.dishes.add(pk)
-    return HttpResponseRedirect(reverse_lazy("dishops:dish-detail", args=[pk]))
+        if dish in cook.dishes.all():
+            cook.dishes.remove(pk)
+        else:
+            cook.dishes.add(pk)
+        return HttpResponseRedirect(reverse_lazy("dishops:dish-detail", args=[pk]))
 
 
 class UserPasswordResetView(PasswordResetView):
