@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Cook List</title>
+{% endblock %}
+
+{% block body %}{% endblock body %}
+
+{% block header %}
+{% include 'includes/sidebar_light.html' %}
+{% endblock header %}
+
+{% block content %}
+<header>
+  <div class="page-header min-vh-85">
+    <div>
+      <img
+          class="position-absolute fixed-top ms-auto w-50 h-100 z-index-0 d-none d-sm-none d-md-block border-radius-section border-top-end-radius-0 border-top-start-radius-0 border-bottom-end-radius-0"
+          src="{% static 'img/curved-images/curved8.jpg' %}" alt="image">
+    </div>
+    <div class="container-fluid mt-5">
+      <div class="row">
+        <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
+          <div class="card d-flex blur justify-content-center p-4 shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+            <div class="text-center">
+              <h3>Cook List</h3>
+            </div>
+            <div class="mt-4">
+              {% if cook_list %}
+              <table class="table">
+                <thead>
+                <tr>
+                  <th style="color: #333;">ID</th>
+                  <th style="color: #333;">Username</th>
+                  <th style="color: #333;">First name</th>
+                  <th style="color: #333;">Last name</th>
+                  <th style="color: #333;">Years of experience</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cook in cook_list %}
+                <tr>
+                  <td>{{ cook.id }}</td>
+                  <td>
+                    <a href="{{ cook.get_absolute_url }}">{{ cook.username }} {% if user == cook %}(Me){% endif %}</a>
+                  </td>
+                  <td>{{ cook.first_name }}</td>
+                  <td>{{ cook.last_name }}</td>
+                  <td>{{ cook.years_of_experience }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="text-center">
+              <a href="{% url 'dishops:cook-create' %}" class="btn bg-gradient-primary mt-3 mb-0">Create</a>
+            </div>
+          </div>
+          {% else %}
+          <p>There are no cooks in the service.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    // get the element to animate
+    var element = document.getElementById('count-stats');
+    var elementHeight = element.clientHeight;
+
+    // listen for scroll event and call animate function
+
+    document.addEventListener('scroll', animate);
+
+    // check if element is in view
+    function inView() {
+        // get window height
+        var windowHeight = window.innerHeight;
+        // get number of pixels that the document is scrolled
+        var scrollY = window.scrollY || window.pageYOffset;
+        // get current scroll position (distance from the top of the page to the bottom of the current viewport)
+        var scrollPosition = scrollY + windowHeight;
+        // get element position (distance from the top of the page to the bottom of the element)
+        var elementPosition = element.getBoundingClientRect().top + scrollY + elementHeight;
+
+        // is scroll position greater than element position? (is element in view?)
+        if (scrollPosition > elementPosition) {
+            return true;
+        }
+
+        return false;
+    }
+
+    var animateComplete = true;
+
+    // animate element when it is in view
+    function animate() {
+
+        // is element in view?
+        if (inView()) {
+            if (animateComplete) {
+                if (document.getElementById('state1')) {
+                    const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
+                    if (!countUp.error) {
+                        countUp.start();
+                    } else {
+                        console.error(countUp.error);
+                    }
+                }
+                if (document.getElementById('state2')) {
+                    const countUp1 = new CountUp('state2', document.getElementById("state2").getAttribute("countTo"));
+                    if (!countUp1.error) {
+                        countUp1.start();
+                    } else {
+                        console.error(countUp1.error);
+                    }
+                }
+                if (document.getElementById('state3')) {
+                    const countUp2 = new CountUp('state3', document.getElementById("state3").getAttribute("countTo"));
+                    if (!countUp2.error) {
+                        countUp2.start();
+                    } else {
+                        console.error(countUp2.error);
+                    }
+                    ;
+                }
+                animateComplete = false;
+            }
+        }
+    }
+
+    if (document.getElementById('typed')) {
+        var typed = new Typed("#typed", {
+            stringsElement: '#typed-strings',
+            typeSpeed: 90,
+            backSpeed: 90,
+            backDelay: 200,
+            startDelay: 500,
+            loop: true
+        });
+    }
+</script>
+<script>
+    if (document.getElementsByClassName('page-header')) {
+        window.onscroll = debounce(function () {
+            var scrollPosition = window.pageYOffset;
+            var bgParallax = document.querySelector('.page-header');
+            var oVal = (window.scrollY / 3);
+            bgParallax.style.transform = 'translate3d(0,' + oVal + 'px,0)';
+        }, 6);
+    }
+</script>
+{% endblock javascripts %}

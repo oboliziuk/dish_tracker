@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Dish list</title>
+{% endblock %}
+
+{% block body %}{% endblock body %}
+
+{% block header %}
+{% include 'includes/sidebar.html' %}
+{% endblock header %}
+
+{% block content %}
+<!-- -------- START HEADER 8 w/ card over right bg image ------- -->
+<header>
+  <div class="page-header min-vh-85 mt-5">
+    <div>
+      <img
+          class="position-absolute fixed-top ms-auto w-50 h-100 z-index-0 d-none d-sm-none d-md-block border-radius-section border-top-end-radius-0 border-top-start-radius-0 border-bottom-end-radius-0"
+          src="{% static 'img/curved-images/curved8.jpg' %}" alt="image">
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 d-flex justify-content-center flex-column">
+          <div class="card d-flex blur justify-content-center p-4 shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+            <div class="text-center">
+              <h3>{{ dish.name }}</h3>
+            </div>
+            <p class="mb-0">
+              Dish type: ({{ dish.dish_type.name }})
+            </p>
+            <h4>
+              Cooks, who prepare these dishes:
+            </h4>
+            <ul>
+              {% for cook in dish.cooks.all %}
+              <li>{{ cook.username }} ({{ cook.first_name }} {{ cook.last_name }})</li>
+              {% endfor %}
+            </ul>
+            <div class="row justify-space-between text-center py-2">
+              <div class="col-12 mx-auto">
+                {% if dish in user.dishes.all %}
+                <a href="{% url 'dishops:toggle-dish-assign' pk=dish.id %}" class="btn bg-gradient-light w-auto me-3">
+                  Delete me from this dish
+                </a>
+                {% else %}
+                <a href="{% url 'dishops:toggle-dish-assign' pk=dish.id %}" class="btn bg-gradient-light w-auto me-3">
+                  Assign me from this dish
+                </a>
+                {% endif %}
+
+                <a href="{% url 'dishops:dish-update' pk=dish.id %}"
+                   class="btn bg-gradient-light w-auto me-3">Update</a>
+                <a href="{% url 'dishops:dish-delete' pk=dish.id %}"
+                   class="btn bg-gradient-primary link-to-page">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock content %}

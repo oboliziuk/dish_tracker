@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Cook</title>
+{% endblock %}
+
+{% block body %}{% endblock body %}
+
+{% block header %}
+{% include 'includes/sidebar.html' %}
+{% endblock header %}
+
+{% block content %}
+<!-- -------- START HEADER 8 w/ card over right bg image ------- -->
+<header>
+  <div class="page-header min-vh-85">
+    <div>
+      <img
+          class="position-absolute fixed-top ms-auto w-50 h-100 z-index-0 d-none d-sm-none d-md-block border-radius-section border-top-end-radius-0 border-top-start-radius-0 border-bottom-end-radius-0"
+          src="{% static 'img/curved-images/curved8.jpg' %}" alt="image">
+    </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-7 d-flex justify-content-center flex-column">
+          <div class="card d-flex blur justify-content-center p-4 shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+            <div class="text-center">
+              <h3>
+                Username: {{ cook.username }}
+              </h3>
+            </div>
+            <div class="cook-details text-left ms-3">
+              <p class="mb-0"><strong>First name:</strong> {{ cook.first_name }}</p>
+              <p class="mb-0"><strong>Last name:</strong> {{ cook.last_name }}</p>
+              <p class="mb-0"><strong>Years of experience:</strong> {{ cook.years_of_experience }}</p>
+              <p class="mb-0"><strong>Is staff:</strong> {{ cook.is_staff }}</p>
+            </div>
+            <div class="ml-3 mt-3 ms-3">
+              <h4>Dishes prepared by this cook:</h4>
+              {% for dish in cook.dishes.all %}
+              <p class="mb-0"><strong>Name:</strong> {{ dish.name }}</p>
+              <p class="mb-0"><strong>Dish type:</strong> {{ dish.dish_type.name }}</p>
+              <p class="text-muted mb-0"><strong>Id:</strong> {{dish.id}}</p>
+
+              {% empty %}
+              <p>No dishes!</p>
+              {% endfor %}
+            </div>
+
+
+            <div class="row justify-space-between text-center py-2">
+              <div class="col-12 mx-auto">
+                <a href="{% url 'dishops:cook-update' pk=cook.id %}"
+                   class="btn bg-gradient-light w-auto me-3">
+                  Update
+                </a>
+                <a href="{% url 'dishops:cook-delete' pk=cook.id %}"
+                   class="btn bg-gradient-primary link-to-page">
+                  Delete
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock content %}
