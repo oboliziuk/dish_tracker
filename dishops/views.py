@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
 from dishops.models import Cook, Dish, DishType
 from dishops.forms import (
@@ -27,25 +28,20 @@ from dishops.forms import (
 )
 
 
-@login_required
-def index(request):
-    """View function for the home page of the site."""
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = "dishops/index.html"
 
-    num_cooks = Cook.objects.count()
-    num_dishes = Dish.objects.count()
-    num_dish_types = DishType.objects.count()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["num_cooks"] = Cook.objects.count()
+        context["num_dishes"] = Dish.objects.count()
+        context["num_dish_types"] = DishType.objects.count()
 
-    num_visits = request.session.get("num_visits", 0)
-    request.session["num_visits"] = num_visits + 1
+        num_visits = self.request.session.get("num_visits", 0)
+        self.request.session["num_visits"] = num_visits + 1
+        context["num_visits"] = num_visits + 1
 
-    context = {
-        "num_cooks": num_cooks,
-        "num_dishes": num_dishes,
-        "num_dish_types": num_dish_types,
-        "num_visits": num_visits + 1,
-    }
-
-    return render(request, "dishops/index.html", context=context)
+        return context
 
 
 class DishTypeListView(LoginRequiredMixin, generic.ListView):

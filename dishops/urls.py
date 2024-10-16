@@ -3,7 +3,6 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from .views import (
-    index,
     DishTypeListView,
     DishTypeCreateView,
     DishTypeUpdateView,
@@ -24,10 +23,11 @@ from .views import (
     UserPasswordResetConfirmView,
     UserPasswordResetView,
     UserPasswordChangeView,
+    IndexView,
 )
 
 urlpatterns = [
-    path("", index, name="index"),
+    path("", IndexView.as_view(), name="index"),
     path(
         "dish_types/",
         DishTypeListView.as_view(),
