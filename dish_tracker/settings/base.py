@@ -13,6 +13,8 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / '.env')
@@ -21,8 +23,7 @@ load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-load_dotenv()
-
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 
@@ -71,7 +72,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "dish_tracker.wsgi.application"
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

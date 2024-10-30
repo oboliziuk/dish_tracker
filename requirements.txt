@@ -1,5 +1,6 @@
 asgiref==3.8.1
 crispy-bootstrap5==2024.10
+dj-database-url==2.2.0
 Django==4.2
 django-crispy-forms==2.3
 django-debug-toolbar==3.2.4
@@ -14,4 +15,5 @@ pycodestyle==2.9.1
 pyflakes==2.5.0
 python-dotenv==1.0.1
 sqlparse==0.5.1
+typing_extensions==4.12.2
 tzdata==2024.2
